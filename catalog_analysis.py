@@ -1,3 +1,5 @@
+import math
+
 movies = [
     {
         "title": "The Dune Chronicles",
@@ -82,8 +84,34 @@ movies = [
 ]
 
 
+def average_rating(movies):
+    """Средняя оценка по каталогу, округлённая до 1 знака."""
+    total = 0
+    for movie in movies:
+        total += movie["rating"]
+    return round(total / len(movies), 1)
+
+
+def catalog_age_stats(movies, current_year=2026):
+    """Кортеж: (возраст самого старого, возраст самого нового, средний возраст)."""
+    ages = [current_year - movie["year"] for movie in movies]
+    oldest = max(ages)
+    newest = min(ages)
+    average = math.ceil(sum(ages) / len(ages))
+    return (oldest, newest, average)
+
+
+def duration_in_hours(minutes):
+    """Переводит минуты в строку вида '2ч 35м'."""
+    hours = minutes // 60
+    mins = minutes % 60
+    return f"{hours}ч {mins}м"
+
+
 def main():
-    print("Hello from catalog_analysis.py!")
+    print("Средний рейтинг:", average_rating(movies))
+    print("Возраст (старый, новый, средний):", catalog_age_stats(movies))
+    print("155 минут =", duration_in_hours(155))
 
 
 if __name__ == "__main__":
