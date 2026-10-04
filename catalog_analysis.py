@@ -108,10 +108,37 @@ def duration_in_hours(minutes):
     return f"{hours}ч {mins}м"
 
 
+def rating_tier(rating):
+    """Категория фильма по оценке."""
+    if rating >= 9:
+        return "шедевр"
+    elif rating >= 7:
+        return "хорошо"
+    else:
+        return "средне" if rating >= 5 else "слабо"
+
+
+def decade_label(year):
+    """Метка фильма по году выпуска."""
+    match year:
+        case _ if year > 2020:
+            return "новые"
+        case _ if year >= 2015:
+            return "недавние"
+        case _:
+            return "старые"
+
+
 def main():
     print("Средний рейтинг:", average_rating(movies))
     print("Возраст (старый, новый, средний):", catalog_age_stats(movies))
     print("155 минут =", duration_in_hours(155))
+
+    for rating in [9.0, 8.9, 7.0, 6.9, 5.0, 4.9]:
+        print(f"{rating} -> {rating_tier(rating)}")
+
+    for year in [2021, 2020, 2015, 2014]:
+        print(f"{year} -> {decade_label(year)}")
 
 
 if __name__ == "__main__":
