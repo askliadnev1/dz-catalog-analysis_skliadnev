@@ -249,11 +249,27 @@ def genres_only_in_one(movies_a, movies_b):
     return all_genres(movies_a) - all_genres(movies_b)
 
 
+def iter_high_rated(movies, min_rating=8.0):
+    """Генератор: лениво отдаёт фильмы с рейтингом не ниже min_rating."""
+    for movie in movies:
+        if movie["rating"] >= min_rating:
+            yield movie
+
+
+def total_duration_above(movies, min_rating=7):
+    """Суммарная длительность фильмов с рейтингом выше min_rating, в минутах."""
+    return sum(
+        movie["duration_min"] for movie in movies if movie["rating"] > min_rating
+    )
+
+
 def main():
-    print(all_genres(movies))
-    print(common_actors(movies[0], movies[3]))
-    print(common_actors(movies[0], movies[1]))
-    print(genres_only_in_one(movies[5:6], movies[:5]))
+    print(iter_high_rated(movies))
+    print()
+    for movie in iter_high_rated(movies):
+        print(format_report_line(movie))
+    print()
+    print("Длительность фильмов с рейтингом выше 7:", total_duration_above(movies))
 
 
 if __name__ == "__main__":
