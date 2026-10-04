@@ -231,13 +231,29 @@ def above_average_ratings(movies):
     }
 
 
+def all_genres(movies):
+    """Множество всех уникальных жанров."""
+    genres = set()
+    for movie in movies:
+        genres = genres | movie["genres"]
+    return genres
+
+
+def common_actors(movie1, movie2):
+    """Актёры, снимавшиеся в обоих фильмах."""
+    return set(movie1["actors"]) & set(movie2["actors"])
+
+
+def genres_only_in_one(movies_a, movies_b):
+    """Жанры, которые есть в movies_a, но нет в movies_b."""
+    return all_genres(movies_a) - all_genres(movies_b)
+
+
 def main():
-    print(count_by_genre(movies))
-    print()
-    for actor, titles in actor_filmography(movies).items():
-        print(f"{actor}: {', '.join(titles)}")
-    print()
-    print(above_average_ratings(movies))
+    print(all_genres(movies))
+    print(common_actors(movies[0], movies[3]))
+    print(common_actors(movies[0], movies[1]))
+    print(genres_only_in_one(movies[5:6], movies[:5]))
 
 
 if __name__ == "__main__":
