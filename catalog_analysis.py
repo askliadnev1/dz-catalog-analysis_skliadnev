@@ -159,16 +159,37 @@ def count_long_movies(movies, threshold=120):
     return count
 
 
+def normalize_title(title):
+    """Приводит название к Title Case без str.title()."""
+    words = title.split()
+    new_words = []
+    for word in words:
+        new_words.append(word[0].upper() + word[1:])
+    return " ".join(new_words)
+
+
+def make_slug(title):
+    """Превращает название в слаг: 'Silent Hours' -> 'silent-hours'."""
+    return title.lower().replace(" ", "-")
+
+
+def format_report_line(movie):
+    """Строка отчёта с описанием фильма."""
+    title = normalize_title(movie["title"])
+    duration = duration_in_hours(movie["duration_min"])
+    genres = ", ".join(sorted(movie["genres"]))
+    return (
+        f'"{title}" ({movie["year"]}) — {movie["rating"]}/10, '
+        f"{duration}, жанры: {genres}"
+    )
+
+
 def main():
-    print("Фильмы не в жанре comedy:")
-    print_non_comedy(movies)
-
-    print()
-    find_first_masterpiece(movies)
-    find_first_masterpiece(movies[:3])
-
-    print()
-    print("Фильмов длиннее 120 минут:", count_long_movies(movies))
+    print(normalize_title("silent hours"))
+    print(make_slug("Silent Hours"))
+    print(make_slug(normalize_title("midnight in oslo")))
+    print(format_report_line(movies[7]))
+    print(format_report_line(movies[5]))
 
 
 if __name__ == "__main__":
