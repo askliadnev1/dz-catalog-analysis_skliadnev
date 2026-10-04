@@ -184,12 +184,27 @@ def format_report_line(movie):
     )
 
 
+def get_rating(movie):
+    """Возвращает рейтинг фильма: используется как key при сортировке."""
+    return movie["rating"]
+
+
+def titles_sorted_by_rating(movies):
+    """Названия фильмов по убыванию рейтинга."""
+    sorted_movies = sorted(movies, key=get_rating, reverse=True)
+    return [movie["title"] for movie in sorted_movies]
+
+
+def top_n_by_rating(movies, n=3):
+    """Топ-n фильмов: список кортежей (название, рейтинг)."""
+    sorted_movies = sorted(movies, key=get_rating, reverse=True)
+    return [(movie["title"], movie["rating"]) for movie in sorted_movies[:n]]
+
+
 def main():
-    print(normalize_title("silent hours"))
-    print(make_slug("Silent Hours"))
-    print(make_slug(normalize_title("midnight in oslo")))
-    print(format_report_line(movies[7]))
-    print(format_report_line(movies[5]))
+    print(titles_sorted_by_rating(movies))
+    print(top_n_by_rating(movies, 3))
+    print("Первый фильм в исходном списке:", movies[0]["title"])
 
 
 if __name__ == "__main__":
